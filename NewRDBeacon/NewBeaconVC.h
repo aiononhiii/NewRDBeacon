@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  NewBeaconVC.h
 //  NewRDBeacon
 //
 //  Created by totyu3 on 17/1/24.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface NewBeaconVC : UIViewController
 
 @end
-

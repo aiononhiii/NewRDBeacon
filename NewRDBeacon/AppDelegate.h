@@ -7,11 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol BeaconSelectDelegate <NSObject>
+-(void)BeaconSelect:(NSArray*)beaconarray;
+@end
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
+@property (nonatomic, assign) id<BeaconSelectDelegate>delegate;
 
 @end
 

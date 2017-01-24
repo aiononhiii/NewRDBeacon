@@ -1,0 +1,68 @@
+//
+//  NewRDBeacon.pch
+//  NewRDBeacon
+//
+//  Created by totyu3 on 17/1/24.
+//  Copyright © 2017年 NIT. All rights reserved.
+//
+
+#ifndef NewRDBeacon_pch
+#define NewRDBeacon_pch
+
+#import "SealAFNetworking.h"     //请求工具
+#import "WKAvoidKeyboardViewController.h" //键盘
+#import "LWLCollectionViewHorizontalLayout.h"//横向显示
+
+#import "UIView+Extension.h"  //frame 工具
+#import "NSDate+Extension.h"  //日期 类
+
+#import "MBProgressHUD+MJ.h"  //提示工具
+#import "MBProgressHUD.h"
+
+#import "MJExtension.h"       //转模型
+#import "MJRefresh.h"         //刷新控件
+
+#import "NITRefreshInit.h"
+
+#define NSNullJudge(str) (str)==[NSNull null] ? @"" : (str)
+
+//ios 10 判断
+#define SYSTEM_VERSION_GRATERTHAN_OR_EQUALTO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
+//沙盒路径
+#define NITFilePath NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject
+
+//xcode沙河路径
+
+//RGB颜色
+#define NITColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+
+#define NITColorAlpha(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)/1.0]
+
+// 随机色
+#define NITRandomColor NITColor(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256))
+
+//小菊花
+#define NITNetwork [UIApplication sharedApplication].networkActivityIndicatorVisible
+
+//通知
+#define NITNotificationCenter [NSNotificationCenter defaultCenter]
+
+//user缓存
+#define NITUserDefaults [NSUserDefaults standardUserDefaults]
+
+#define NITScreenW [UIScreen mainScreen].bounds.size.width
+#define NITScreenH [UIScreen mainScreen].bounds.size.height
+
+#define WindowView [UIApplication sharedApplication].windows.lastObject
+
+#define MasterKeyWindow [UIApplication sharedApplication].keyWindow
+
+#define SystemColor(alpha) NITColorAlpha(255.0, 62.0, 123.0,(alpha))
+
+//Main storyboard
+#define MainSB [UIStoryboard storyboardWithName:@"Main" bundle:nil]
+
+
+
+#endif /* NewRDBeacon_pch */
