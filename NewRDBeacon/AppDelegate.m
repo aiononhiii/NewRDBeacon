@@ -254,6 +254,15 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     if (beacons.count==0) {
+        NSArray *beacons = [self.BeaconInfo allKeys];
+        for(int i = 0 ; i < beacons.count; i++){
+            NSString *name = beacons[i];
+            NSString *uuid = [[self.BeaconInfo objectForKey:name] objectForKey:@"uuid"];
+            self.SelectBeacon = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:uuid] identifier:@"rdbeacon"];
+            [self.LocationManager startMonitoringForRegion:self.SelectBeacon];
+            [self.LocationManager startRangingBeaconsInRegion:self.SelectBeacon];
+            [self.LocationManager requestStateForRegion:self.SelectBeacon];
+        }
         [MBProgressHUD showMessage:@"beacon搜索中" toView:WindowView];
     }else{
     
