@@ -87,7 +87,7 @@
                                    selector:@selector(updateBeaconDataList)
                                    userInfo:nil
                                     repeats:YES];
-    [NSTimer scheduledTimerWithTimeInterval:20.0
+    [NSTimer scheduledTimerWithTimeInterval:600.0
                                      target:self
                                    selector:@selector(updateSBSeverBeaconList)
                                    userInfo:nil
