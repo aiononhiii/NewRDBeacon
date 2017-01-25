@@ -82,7 +82,7 @@
     self.LocationManager.delegate = self;
     
     
-    [NSTimer scheduledTimerWithTimeInterval:10.0
+    [NSTimer scheduledTimerWithTimeInterval:5.0
                                      target:self
                                    selector:@selector(updateBeaconDataList)
                                    userInfo:nil
