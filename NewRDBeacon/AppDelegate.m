@@ -144,7 +144,7 @@
 }
 
 -(void)GetBeaconInfo{
-//    [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
+    
     [[SealAFNetworking NIT] PostWithUrl:GetBeaconInfo parameters:nil mjheader:nil superview:nil success:^(id success){
         NSDictionary *tmpDic = success;
         self.BeaconInfo = [NSMutableDictionary dictionaryWithDictionary:tmpDic];
@@ -251,9 +251,37 @@
 
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region{
 
-    [self.delegate BeaconSelect:beacons];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    self.BeaconArray = beacons;
+    if (beacons.count==0) {
+        [MBProgressHUD showMessage:@"beacon搜索中" toView:WindowView];
+    }else{
+    
+        [MBProgressHUD hideHUDForView:WindowView];
+        
+        self.BeaconArray = beacons;
+        
+        
+        NSMutableArray *beaarr = [NSMutableArray array];
+        
+        NSArray *beaconarr = [self.BeaconInfo allKeys];
+        for(int i = 0 ; i < beaconarr.count; i++){
+            NSString *name = beaconarr[i];
+            NSString *uuid = [[self.BeaconInfo objectForKey:name] objectForKey:@"uuid"];
+            NSString *major = [[self.BeaconInfo objectForKey:name] objectForKey:@"major"];
+            NSString *minor = [[self.BeaconInfo objectForKey:name] objectForKey:@"minor"];
+            for (CLBeacon *bea in beacons) {
+                if ([[NSString stringWithFormat:@"%@",bea.major]isEqualToString:major]&&[[NSString stringWithFormat:@"%@",bea.minor]isEqualToString:minor]&&[[NSString stringWithFormat:@"%@",[bea.proximityUUID UUIDString]]isEqualToString:uuid]) {
+                    NSMutableDictionary *beadict = [NSMutableDictionary dictionary];
+                    [beadict setObject:bea forKey:@"beacon"];
+                    [beadict setObject:name forKey:@"beaconname"];
+                    [beaarr addObject:beadict];
+                }
+            }
+        }
+        
+        [self.delegate BeaconSelect:beaarr];
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

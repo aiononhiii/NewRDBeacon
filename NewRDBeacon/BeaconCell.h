@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface BeaconCell : UICollectionViewCell
+@property (weak, nonatomic) IBOutlet UIView *bgview;
 @property (weak, nonatomic) IBOutlet UILabel *locationName;
 @property (weak, nonatomic) IBOutlet UILabel *proximity;
 @property (weak, nonatomic) IBOutlet UILabel *uuidLabel;

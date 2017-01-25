@@ -57,29 +57,37 @@ static NSString * const reuseIdentifier = @"NewBeaconCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     BeaconCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    CLBeacon *beacon = [self.BeaconArr objectAtIndex:indexPath.row];
-    NSLog(@"rssi is :%ld",beacon.rssi);
-    NSLog(@"beacon.proximity %@",beacon.major);
-    NSLog(@"beacon.proximity %@",beacon.minor);
+    NSMutableDictionary *dict = [self.BeaconArr objectAtIndex:indexPath.row];
+    
+    CLBeacon *beacon = [dict objectForKey:@"beacon"];
+    NSLog(@"UUID %@",[beacon.proximityUUID UUIDString]);
+    NSLog(@"Acc:%.2fm Rssi:%ld",beacon.accuracy,(long)beacon.rssi);
+    NSLog(@"beacon.major %@",beacon.major);
+    NSLog(@"beacon.minor %@",beacon.minor);
     NSLog(@"beacon.proximity %ld",beacon.proximity);
     
 
     switch (beacon.proximity) {
-        case CLProximityNear:
-            cell.proximity.text = @"近";
-            break;
         case CLProximityImmediate:
             cell.proximity.text = @"超近";
+            [cell.statusImage setImage:[UIImage imageNamed:@"on5"]];
+            break;
+        case CLProximityNear:
+            cell.proximity.text = @"近";
+            [cell.statusImage setImage:[UIImage imageNamed:@"on4"]];
             break;
         case CLProximityFar:
             cell.proximity.text = @"远";
+            [cell.statusImage setImage:[UIImage imageNamed:@"on3"]];
             break;
         case CLProximityUnknown:
             cell.proximity.text = @"不见了";
+            [cell.statusImage setImage:[UIImage imageNamed:@"on1"]];
             break;
         default:
             break;
     }
+    cell.locationName.text = [dict objectForKey:@"beaconname"];
     cell.uuidLabel.text = [beacon.proximityUUID UUIDString];
     cell.majorLabel.text = [NSString stringWithFormat:@"%@",beacon.major];
     cell.minorLabel.text = [NSString stringWithFormat:@"%@",beacon.minor];
