@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSArray *BeaconArray;
 @property (nonatomic, strong) NSDictionary *currentBeaconDic;
 @property (strong , nonatomic) BGTask *bgTask; //后台任务
+@property (nonatomic, strong) NSMutableDictionary *beaalldict;
 @end
 
 @implementation AppDelegate
@@ -86,14 +87,14 @@
                                    selector:@selector(updateBeaconDataList)
                                    userInfo:nil
                                     repeats:YES];
-    [NSTimer scheduledTimerWithTimeInterval:600.0
+    [NSTimer scheduledTimerWithTimeInterval:20.0
                                      target:self
                                    selector:@selector(updateSBSeverBeaconList)
                                    userInfo:nil
                                     repeats:YES];
     
     [self GetBeaconInfo];
-    
+    self.beaalldict = [NSMutableDictionary dictionary];
     //位置を取得し始める
     [self startLocation];
     return YES;
@@ -103,17 +104,25 @@
     
 
     NSLog(@"%@",self.BeaconArray);
-    NSString *identifierForVendor=[[[UIDevice currentDevice] identifierForVendor]UUIDString];
-    for (CLBeacon *beacon in self.BeaconArray){
-        NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-        fmt.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-        NSString *time = [fmt stringFromDate:[NSDate date]];
-        NSString* Acc  =[NSString stringWithFormat:@"%.2f",beacon.accuracy];
-        NSString* Rssi  =[NSString stringWithFormat:@"%ld",(long)beacon.rssi ];
+    
+    NSString *identifierForVendor=[NITUserDefaults objectForKey:@"devicename"];
+    if ([identifierForVendor isEqualToString:@""]||!identifierForVendor) {
         
-        self.currentBeaconDic = @{@"useruuid":identifierForVendor,@"uuid":beacon.proximityUUID.UUIDString,@"major":beacon.major.stringValue,@"minor":beacon.minor.stringValue,@"updatedate":time,@"acc":Acc,@"rssi":Rssi};
-        
-        [self.updateBeaconArray addObject:self.currentBeaconDic];
+    }else{
+        for (NSMutableDictionary *dict in self.BeaconArray){
+
+            CLBeacon *beacon = [dict objectForKey:@"beacon"];
+            
+            NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+            fmt.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+            NSString *time = [fmt stringFromDate:[NSDate date]];
+            NSString* Acc  =[NSString stringWithFormat:@"%.2f",beacon.accuracy];
+            NSString* Rssi  =[NSString stringWithFormat:@"%ld",(long)beacon.rssi ];
+            
+            self.currentBeaconDic = @{@"useruuid":identifierForVendor,@"uuid":beacon.proximityUUID.UUIDString,@"major":beacon.major.stringValue,@"minor":beacon.minor.stringValue,@"updatedate":time,@"acc":Acc,@"rssi":Rssi};
+            
+            [self.updateBeaconArray addObject:self.currentBeaconDic];
+        }
     }
 }
 
@@ -159,10 +168,19 @@
     for(int i = 0 ; i < beacons.count; i++){
         NSString *name = beacons[i];
         NSString *uuid = [[self.BeaconInfo objectForKey:name] objectForKey:@"uuid"];
-        self.SelectBeacon = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:uuid] identifier:@"rdbeacon"];
+        NSString *major = [[self.BeaconInfo objectForKey:name] objectForKey:@"major"];
+        NSString *minor = [[self.BeaconInfo objectForKey:name] objectForKey:@"minor"];
+        
+        self.SelectBeacon = [[CLBeaconRegion alloc]initWithProximityUUID:[[NSUUID alloc]initWithUUIDString:uuid] major:[major intValue] minor:[minor intValue] identifier:name];
+        
+        self.SelectBeacon.notifyOnEntry = YES;
+        self.SelectBeacon.notifyOnExit = YES;
+        self.SelectBeacon.notifyEntryStateOnDisplay = YES;
+        
         [self.LocationManager startMonitoringForRegion:self.SelectBeacon];
         [self.LocationManager startRangingBeaconsInRegion:self.SelectBeacon];
         [self.LocationManager requestStateForRegion:self.SelectBeacon];
+        NSLog(@"%@",uuid);
     }
 }
 
@@ -253,25 +271,37 @@
 
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
+    NSLog(@"%@",[self.SelectBeacon.proximityUUID UUIDString]);
+    
     if (beacons.count==0) {
         NSArray *beacons = [self.BeaconInfo allKeys];
         for(int i = 0 ; i < beacons.count; i++){
             NSString *name = beacons[i];
             NSString *uuid = [[self.BeaconInfo objectForKey:name] objectForKey:@"uuid"];
-            self.SelectBeacon = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:uuid] identifier:@"rdbeacon"];
-            [self.LocationManager startMonitoringForRegion:self.SelectBeacon];
-            [self.LocationManager startRangingBeaconsInRegion:self.SelectBeacon];
-            [self.LocationManager requestStateForRegion:self.SelectBeacon];
+            
+            if (![[region.proximityUUID UUIDString] isEqualToString:uuid]){
+                
+                [self.LocationManager stopMonitoringForRegion:region];
+                
+                [self.LocationManager stopRangingBeaconsInRegion:region];
+                
+            }else{
+            
+//                [MBProgressHUD showMessage:@"beacon搜索中..." toView:WindowView];
+                self.SelectBeacon = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:uuid] identifier:@"rdbeacon"];
+                [self.LocationManager startMonitoringForRegion:self.SelectBeacon];
+                [self.LocationManager startRangingBeaconsInRegion:self.SelectBeacon];
+                [self.LocationManager requestStateForRegion:self.SelectBeacon];
+            }
         }
-        [MBProgressHUD showMessage:@"beacon搜索中..." toView:WindowView];
     }else{
     
-        [MBProgressHUD hideHUDForView:WindowView];
+//        [MBProgressHUD hideHUDForView:WindowView];
+    
+    
         
-        self.BeaconArray = beacons;
         
-        
-        NSMutableArray *beaarr = [NSMutableArray array];
+        CLBeacon *bea = beacons[0];
         
         NSArray *beaconarr = [self.BeaconInfo allKeys];
         for(int i = 0 ; i < beaconarr.count; i++){
@@ -279,19 +309,23 @@
             NSString *uuid = [[self.BeaconInfo objectForKey:name] objectForKey:@"uuid"];
             NSString *major = [[self.BeaconInfo objectForKey:name] objectForKey:@"major"];
             NSString *minor = [[self.BeaconInfo objectForKey:name] objectForKey:@"minor"];
-            for (CLBeacon *bea in beacons) {
                 if ([[NSString stringWithFormat:@"%@",bea.major]isEqualToString:major]&&[[NSString stringWithFormat:@"%@",bea.minor]isEqualToString:minor]&&[[NSString stringWithFormat:@"%@",[bea.proximityUUID UUIDString]]isEqualToString:uuid]) {
                     NSMutableDictionary *beadict = [NSMutableDictionary dictionary];
                     [beadict setObject:bea forKey:@"beacon"];
                     [beadict setObject:name forKey:@"beaconname"];
-                    [beaarr addObject:beadict];
+                    [self.beaalldict setObject:beadict forKey:region.identifier];
+                    NSMutableArray *array = [NSMutableArray array];
+                    NSArray *beaconidarr = [_beaalldict allKeys];
+                    for (int i = 0; i<beaconidarr.count; i++) {
+                        [array addObject:_beaalldict[beaconidarr[i]]];
+                    }
+                    [self.delegate BeaconSelect:array];
+                    self.BeaconArray = array;
                 }
-            }
         }
-        
-        [self.delegate BeaconSelect:beaarr];
     }
 }
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

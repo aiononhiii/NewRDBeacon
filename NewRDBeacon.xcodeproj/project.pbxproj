@@ -72,6 +72,7 @@
 		E96F877F1E36F93400C9B81D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96F877E1E36F93400C9B81D /* CoreLocation.framework */; };
 		E96F87811E370DB800C9B81D /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96F87801E370DB800C9B81D /* CoreBluetooth.framework */; };
 		E96F87841E373E3D00C9B81D /* BGTask.m in Sources */ = {isa = PBXBuildFile; fileRef = E96F87831E373E3D00C9B81D /* BGTask.m */; };
+		E9AAB8331E38B68700F1FA7A /* loginvc.m in Sources */ = {isa = PBXBuildFile; fileRef = E9AAB8321E38B68700F1FA7A /* loginvc.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -223,6 +224,8 @@
 		E96F87801E370DB800C9B81D /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		E96F87821E373E3D00C9B81D /* BGTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BGTask.h; sourceTree = "<group>"; };
 		E96F87831E373E3D00C9B81D /* BGTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BGTask.m; sourceTree = "<group>"; };
+		E9AAB8311E38B68700F1FA7A /* loginvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = loginvc.h; sourceTree = "<group>"; };
+		E9AAB8321E38B68700F1FA7A /* loginvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = loginvc.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -282,6 +285,8 @@
 				E96F873F1E36EFD300C9B81D /* SealAFNetworking.m */,
 				E96F86961E36EF0700C9B81D /* AppDelegate.h */,
 				E96F86971E36EF0700C9B81D /* AppDelegate.m */,
+				E9AAB8311E38B68700F1FA7A /* loginvc.h */,
+				E9AAB8321E38B68700F1FA7A /* loginvc.m */,
 				E96F87761E36F15A00C9B81D /* NewBeaconVC.h */,
 				E96F87771E36F15A00C9B81D /* NewBeaconVC.m */,
 				E96F877A1E36F6F400C9B81D /* BeaconCell.h */,
@@ -717,6 +722,7 @@
 				E96F87621E36EFD300C9B81D /* MJRefreshHeader.m in Sources */,
 				E96F87841E373E3D00C9B81D /* BGTask.m in Sources */,
 				E96F876F1E36EFD300C9B81D /* UIScrollView+MJExtension.m in Sources */,
+				E9AAB8331E38B68700F1FA7A /* loginvc.m in Sources */,
 				E96F87451E36EFD300C9B81D /* AFHTTPSessionManager.m in Sources */,
 				E96F874C1E36EFD300C9B81D /* FishTabButtonPagerController.m in Sources */,
 				E96F87571E36EFD300C9B81D /* MJPropertyKey.m in Sources */,

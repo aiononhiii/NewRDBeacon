@@ -36,6 +36,7 @@ static NSString * const reuseIdentifier = @"NewBeaconCell";
     [super viewDidLoad];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     appDelegate.delegate = self;
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,7 +65,7 @@ static NSString * const reuseIdentifier = @"NewBeaconCell";
     NSLog(@"Acc:%.2fm Rssi:%ld",beacon.accuracy,(long)beacon.rssi);
     NSLog(@"beacon.major %@",beacon.major);
     NSLog(@"beacon.minor %@",beacon.minor);
-    NSLog(@"beacon.proximity %ld",beacon.proximity);
+    NSLog(@"beacon.proximity %ld",(long)beacon.proximity);
     
 
     switch (beacon.proximity) {
@@ -96,6 +97,8 @@ static NSString * const reuseIdentifier = @"NewBeaconCell";
     
     return cell;
 }
+
+
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
 }

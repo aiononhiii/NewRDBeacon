@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WKAvoidKeyboardViewController.h"
 
-@interface NewBeaconVC : UIViewController
+@interface NewBeaconVC : WKAvoidKeyboardViewController
 
 @end

@@ -8,8 +8,6 @@
 #define GetBeaconInfoURL @"https://rdbeacon.azurewebsites.net/rdgetlocation.php"
 #define RdupdatedataURL @"https://mimamori2.azurewebsites.net/beacon/rdupdatedata.php"
 
-
-
 #import "SealAFNetworking.h"
 
 #import <UIKit/UIKit.h>
