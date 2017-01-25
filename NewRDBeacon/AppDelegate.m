@@ -263,7 +263,7 @@
             [self.LocationManager startRangingBeaconsInRegion:self.SelectBeacon];
             [self.LocationManager requestStateForRegion:self.SelectBeacon];
         }
-        [MBProgressHUD showMessage:@"beacon搜索中" toView:WindowView];
+        [MBProgressHUD showMessage:@"beacon搜索中..." toView:WindowView];
     }else{
     
         [MBProgressHUD hideHUDForView:WindowView];

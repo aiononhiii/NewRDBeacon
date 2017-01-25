@@ -69,19 +69,19 @@ static NSString * const reuseIdentifier = @"NewBeaconCell";
 
     switch (beacon.proximity) {
         case CLProximityImmediate:
-            cell.proximity.text = @"超近";
+            cell.proximity.text = @"非常近";
             [cell.statusImage setImage:[UIImage imageNamed:@"on5"]];
             break;
         case CLProximityNear:
-            cell.proximity.text = @"近";
+            cell.proximity.text = @"近い";
             [cell.statusImage setImage:[UIImage imageNamed:@"on4"]];
             break;
         case CLProximityFar:
-            cell.proximity.text = @"远";
+            cell.proximity.text = @"遠い";
             [cell.statusImage setImage:[UIImage imageNamed:@"on3"]];
             break;
         case CLProximityUnknown:
-            cell.proximity.text = @"不见了";
+            cell.proximity.text = @"見ない";
             [cell.statusImage setImage:[UIImage imageNamed:@"on1"]];
             break;
         default:
